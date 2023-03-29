@@ -3,6 +3,7 @@ package controllers
 import enums.Sexo
 import models.Accidente
 import repositories.CsvRepository
+import java.io.File
 import java.time.Month
 
 class CsvController(private val repository: CsvRepository<Accidente>) {
@@ -81,5 +82,13 @@ class CsvController(private val repository: CsvRepository<Accidente>) {
 
     fun accidentesAtropelloAnimal(): List<Accidente> {
         return repository.accidentesAtropelloAnimal()
+    }
+
+    fun escribirJson(): File {
+        return repository.escribirJson()
+    }
+
+    fun escribirXml(): File {
+        return repository.escribirXml()
     }
 }

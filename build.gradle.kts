@@ -14,6 +14,8 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    implementation("org.simpleframework:simple-xml:2.7.1")
 }
 
 tasks.test {

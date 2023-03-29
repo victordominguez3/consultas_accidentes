@@ -13,4 +13,9 @@ const val RESET = "\u001B[0m"
 
 fun main(args: Array<String>) {
 
+    val controller = CsvController(CsvRepositoryMemory())
+
+    controller.escribirJson()
+    controller.escribirXml()
+
 }

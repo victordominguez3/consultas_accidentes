@@ -1,6 +1,7 @@
 package repositories
 
 import enums.Sexo
+import java.io.File
 import java.time.Month
 
 interface CsvRepository<T> {
@@ -23,5 +24,7 @@ interface CsvRepository<T> {
     fun numAccidentesAtropelloPersona(): Int
     fun porMeteorologia(): Map<String?, List<T>>
     fun accidentesAtropelloAnimal(): List<T>
+    fun escribirJson(): File
+    fun escribirXml(): File
 
 }

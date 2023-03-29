@@ -1,9 +1,18 @@
 package repositories
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapter
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dto.AccidenteDto
+import dto.AccidenteListDto
 import enums.Sexo
 import enums.TipoAccidente
 import formatters.*
 import models.Accidente
+import org.simpleframework.xml.core.Persister
+import utils.LocalDateAdapter
+import utils.LocalTimeAdapter
+import utils.toPrettyJson
 import java.io.File
 import java.time.DayOfWeek
 import java.time.Month
@@ -13,7 +22,7 @@ class CsvRepositoryMemory: CsvRepository<Accidente> {
     val accidentes = leerCSV()
 
     override fun leerCSV(): List<Accidente> {
-        val path = "${System.getProperty("user.dir")}${File.separator}data${File.separator}accidentes.csv"
+        val path = "${System.getProperty("user.dir")}${File.separator}src${File.separator}main${File.separator}resources${File.separator}accidentes.csv"
         val fichero = File(path)
 
         return fichero.readLines()
@@ -130,4 +139,59 @@ class CsvRepositoryMemory: CsvRepository<Accidente> {
         return accidentes.filter { it.tipoAccidente == TipoAccidente.AtropelloAnimal }
 
     }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    override fun escribirJson(): File {
+        val path = "${System.getProperty("user.dir")}${File.separator}data${File.separator}accidentesJson.json"
+        val fichero = File(path)
+
+        val moshi = Moshi.Builder()
+            .add(LocalDateAdapter())
+            .add(LocalTimeAdapter())
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
+
+        val jsonAdapter = moshi.adapter<List<Accidente>>()
+
+        fichero.writeText(jsonAdapter.toPrettyJson(accidentes))
+
+        return fichero
+    }
+
+    override fun escribirXml(): File {
+        val path = "${System.getProperty("user.dir")}${File.separator}data${File.separator}accidentesXml.xml"
+        val fichero = File(path)
+
+        val serializer = Persister()
+
+        serializer.write(accidentes.toAccidenteListDto(), fichero)
+
+        return fichero
+    }
+
+    private fun Accidente.toAccidenteDto() = AccidenteDto(
+        numExp = numExp,
+        fecha = fecha.toString(),
+        hora = hora.toString(),
+        localizacion = localizacion,
+        numero = numero,
+        codigoDistrito = codigoDistrito ?: 0,
+        distrito = distrito,
+        tipoAccidente = tipoAccidente.toString(),
+        estadoMeteorologico = estadoMeteorologico ?: "",
+        tipoVehiculo = tipoVehiculo,
+        tipoPersona = tipoPersona.toString(),
+        rangoEdad = rangoEdad,
+        sexo = sexo.toString(),
+        codLesividad = codLesividad ?: 0,
+        lesividad = lesividad ?: "",
+        coordX = coordX ?: 0.0,
+        coordY = coordY ?: 0.0,
+        positivoAlcohol = positivoAlcohol ?: false,
+        positivoDroga = positivoDroga ?: false
+    )
+
+    private fun List<Accidente>.toAccidenteListDto() = AccidenteListDto(
+        accidentes = map { it.toAccidenteDto() }
+    )
 }
