@@ -3,25 +3,26 @@ package repositories
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import dto.AccidenteDto
-import dto.AccidenteListDto
 import enums.Sexo
 import enums.TipoAccidente
 import formatters.*
+import mappers.*
 import models.Accidente
 import org.simpleframework.xml.core.Persister
+import `typealias`.ListaAccidentes
 import utils.LocalDateAdapter
 import utils.LocalTimeAdapter
 import utils.toPrettyJson
 import java.io.File
+import java.lang.Exception
 import java.time.DayOfWeek
 import java.time.Month
 
-class CsvRepositoryMemory: CsvRepository<Accidente> {
+class ConsultasRepositoryMemory: ConsultasRepository {
 
-    val accidentes = leerCSV()
+    var accidentes = leerCSV()
 
-    override fun leerCSV(): List<Accidente> {
+    override fun leerCSV(): ListaAccidentes {
         val path = "${System.getProperty("user.dir")}${File.separator}src${File.separator}main${File.separator}resources${File.separator}accidentes.csv"
         val fichero = File(path)
 
@@ -53,7 +54,44 @@ class CsvRepositoryMemory: CsvRepository<Accidente> {
             }
     }
 
-    override fun positivoAlcoholODrogas(): List<Accidente> {
+    override fun buscarTodos(): ListaAccidentes {
+        return accidentes
+    }
+
+    override fun buscarPorId(id: String): Accidente? {
+        return accidentes.find { it.numExp == id }
+    }
+
+    override fun guardar(item: Accidente): Accidente? {
+        for (i in accidentes.indices) {
+            if (accidentes[i].numExp == item.numExp) {
+                return null
+            }
+        }
+        return item
+    }
+
+    override fun actualizar(item: Accidente): ListaAccidentes? {
+        for (i in accidentes.indices) {
+            if (accidentes[i].numExp == item.numExp) {
+                accidentes.toMutableList()[i] = item
+                return accidentes
+            }
+        }
+        return null
+    }
+
+    override fun eliminarPorId(id: String): ListaAccidentes? {
+        for (i in accidentes.indices) {
+            if (accidentes[i].numExp == id) {
+                accidentes.drop(i)
+                return accidentes
+            }
+        }
+        return null
+    }
+
+    override fun positivoAlcoholODrogas(): ListaAccidentes {
         return accidentes.filter { it.positivoAlcohol == true || it.positivoDroga == true }
     }
 
@@ -61,7 +99,7 @@ class CsvRepositoryMemory: CsvRepository<Accidente> {
         return accidentes.count { it.positivoAlcohol == true && it.positivoDroga == true }
     }
 
-    override fun agruparPorSexo(): Map<Sexo, List<Accidente>> {
+    override fun agruparPorSexo(): Map<Sexo, ListaAccidentes> {
         return accidentes.groupBy { it.sexo }
     }
 
@@ -70,11 +108,11 @@ class CsvRepositoryMemory: CsvRepository<Accidente> {
             .mapValues { it.value.size }
     }
 
-    override fun agruparPorTipoVehiculo(): Map<String, List<Accidente>> {
+    override fun agruparPorTipoVehiculo(): Map<String, ListaAccidentes> {
         return accidentes.groupBy { it.tipoVehiculo }
     }
 
-    override fun enCalleLeganes(): List<Accidente> {
+    override fun enCalleLeganes(): ListaAccidentes {
         return accidentes.filter { it.localizacion.contains("LEGANES") }
     }
 
@@ -95,23 +133,23 @@ class CsvRepositoryMemory: CsvRepository<Accidente> {
             .key
     }
 
-    override fun porDistritoDescendentemente(): Map<String, List<Accidente>> {
+    override fun porDistritoDescendentemente(): Map<String, ListaAccidentes> {
         return accidentes.sortedByDescending { it.distrito }
             .groupBy { it.distrito }
     }
 
-    override fun accidentesFinSemanaNoche(): List<Accidente> {
+    override fun accidentesFinSemanaNoche(): ListaAccidentes {
         return accidentes.filter { it.fecha.dayOfWeek == DayOfWeek.SATURDAY || it.fecha.dayOfWeek == DayOfWeek.SUNDAY }
             .filter { it.hora.hour in 0..6 }
     }
 
-    override fun accidentesFinSemanaNochePositivoAlcohol(): List<Accidente> {
+    override fun accidentesFinSemanaNochePositivoAlcohol(): ListaAccidentes {
         return accidentes.filter { it.fecha.dayOfWeek == DayOfWeek.SATURDAY || it.fecha.dayOfWeek == DayOfWeek.SUNDAY }
             .filter { it.hora.hour in 0..6 }
             .filter { it.positivoAlcohol == true }
     }
 
-    override fun accidentesUnoOMasDeUnFallecido(): List<Accidente> {
+    override fun accidentesUnoOMasDeUnFallecido(): ListaAccidentes {
         return accidentes.filter { it.codLesividad == 4 }
     }
 
@@ -131,11 +169,11 @@ class CsvRepositoryMemory: CsvRepository<Accidente> {
         return accidentes.filter { it.tipoAccidente == TipoAccidente.AtropelloPersona }.size
     }
 
-    override fun porMeteorologia(): Map<String?, List<Accidente>> {
+    override fun porMeteorologia(): Map<String?, ListaAccidentes> {
         return accidentes.groupBy { it.estadoMeteorologico }
     }
 
-    override fun accidentesAtropelloAnimal(): List<Accidente> {
+    override fun accidentesAtropelloAnimal(): ListaAccidentes {
         return accidentes.filter { it.tipoAccidente == TipoAccidente.AtropelloAnimal }
 
     }
@@ -151,7 +189,7 @@ class CsvRepositoryMemory: CsvRepository<Accidente> {
             .addLast(KotlinJsonAdapterFactory())
             .build()
 
-        val jsonAdapter = moshi.adapter<List<Accidente>>()
+        val jsonAdapter = moshi.adapter<ListaAccidentes>()
 
         fichero.writeText(jsonAdapter.toPrettyJson(accidentes))
 
@@ -168,30 +206,4 @@ class CsvRepositoryMemory: CsvRepository<Accidente> {
 
         return fichero
     }
-
-    private fun Accidente.toAccidenteDto() = AccidenteDto(
-        numExp = numExp,
-        fecha = fecha.toString(),
-        hora = hora.toString(),
-        localizacion = localizacion,
-        numero = numero,
-        codigoDistrito = codigoDistrito ?: 0,
-        distrito = distrito,
-        tipoAccidente = tipoAccidente.toString(),
-        estadoMeteorologico = estadoMeteorologico ?: "",
-        tipoVehiculo = tipoVehiculo,
-        tipoPersona = tipoPersona.toString(),
-        rangoEdad = rangoEdad,
-        sexo = sexo.toString(),
-        codLesividad = codLesividad ?: 0,
-        lesividad = lesividad ?: "",
-        coordX = coordX ?: 0.0,
-        coordY = coordY ?: 0.0,
-        positivoAlcohol = positivoAlcohol ?: false,
-        positivoDroga = positivoDroga ?: false
-    )
-
-    private fun List<Accidente>.toAccidenteListDto() = AccidenteListDto(
-        accidentes = map { it.toAccidenteDto() }
-    )
 }

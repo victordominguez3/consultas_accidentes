@@ -1,18 +1,46 @@
 package controllers
 
 import enums.Sexo
+import exceptions.AccidenteNoEncontradoException
+import exceptions.AccidenteNoValidoException
 import models.Accidente
-import repositories.CsvRepository
+import repositories.ConsultasRepository
+import `typealias`.ListaAccidentes
 import java.io.File
+import java.lang.Exception
 import java.time.Month
 
-class CsvController(private val repository: CsvRepository<Accidente>) {
+class CsvController(private val repository: ConsultasRepository) {
 
-    fun leerCSV(): List<Accidente> {
+    fun buscarTodos(): ListaAccidentes {
+        return repository.buscarTodos()
+    }
+
+    fun buscarPorId(id: String): Accidente {
+        return repository.buscarPorId(id)
+            ?: throw AccidenteNoEncontradoException("No existe ningún accidente con ese número de expediente")
+    }
+
+    fun guardar(item: Accidente): Accidente {
+        return repository.guardar(item)
+            ?: throw AccidenteNoValidoException("Ya existe un accidente con el mismo número de expediente")
+    }
+
+    fun actualizar(item: Accidente): ListaAccidentes {
+        return repository.actualizar(item)
+            ?: throw AccidenteNoEncontradoException("No se pudo actualizar el accidente porque no existe en la lista")
+    }
+
+    fun eliminarPorId(id: String): ListaAccidentes {
+        return repository.eliminarPorId(id)
+            ?: throw AccidenteNoEncontradoException("No existe ningún accidente con ese número de expediente")
+    }
+
+    fun leerCSV(): ListaAccidentes {
         return repository.leerCSV()
     }
 
-    fun positivoAlcoholODrogas(): List<Accidente> {
+    fun positivoAlcoholODrogas(): ListaAccidentes {
         return repository.positivoAlcoholODrogas()
     }
 
@@ -20,7 +48,7 @@ class CsvController(private val repository: CsvRepository<Accidente>) {
         return repository.numPositivoAlcoholYDrogas()
     }
 
-    fun agruparPorSexo(): Map<Sexo, List<Accidente>> {
+    fun agruparPorSexo(): Map<Sexo, ListaAccidentes> {
         return repository.agruparPorSexo()
     }
 
@@ -28,11 +56,11 @@ class CsvController(private val repository: CsvRepository<Accidente>) {
         return repository.numAccidentesPorMeses()
     }
 
-    fun agruparPorTipoVehiculo(): Map<String, List<Accidente>> {
+    fun agruparPorTipoVehiculo(): Map<String, ListaAccidentes> {
         return repository.agruparPorTipoVehiculo()
     }
 
-    fun enCalleLeganes(): List<Accidente> {
+    fun enCalleLeganes(): ListaAccidentes {
         return repository.enCalleLeganes()
     }
 
@@ -48,19 +76,19 @@ class CsvController(private val repository: CsvRepository<Accidente>) {
         return repository.distritoMenosAccidentes()
     }
 
-    fun porDistritoDescendentemente(): Map<String, List<Accidente>> {
+    fun porDistritoDescendentemente(): Map<String, ListaAccidentes> {
         return repository.porDistritoDescendentemente()
     }
 
-    fun accidentesFinSemanaNoche(): List<Accidente> {
+    fun accidentesFinSemanaNoche(): ListaAccidentes {
         return repository.accidentesFinSemanaNoche()
     }
 
-    fun accidentesFinSemanaNochePositivoAlcohol(): List<Accidente> {
+    fun accidentesFinSemanaNochePositivoAlcohol(): ListaAccidentes {
         return repository.accidentesFinSemanaNochePositivoAlcohol()
     }
 
-    fun accidentesUnoOMasDeUnFallecido(): List<Accidente> {
+    fun accidentesUnoOMasDeUnFallecido(): ListaAccidentes {
         return repository.accidentesUnoOMasDeUnFallecido()
     }
 
@@ -76,11 +104,11 @@ class CsvController(private val repository: CsvRepository<Accidente>) {
         return repository.numAccidentesAtropelloPersona()
     }
 
-    fun porMeteorologia(): Map<String?, List<Accidente>> {
+    fun porMeteorologia(): Map<String?, ListaAccidentes> {
         return repository.porMeteorologia()
     }
 
-    fun accidentesAtropelloAnimal(): List<Accidente> {
+    fun accidentesAtropelloAnimal(): ListaAccidentes {
         return repository.accidentesAtropelloAnimal()
     }
 

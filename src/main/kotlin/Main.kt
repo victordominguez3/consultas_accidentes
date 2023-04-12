@@ -1,21 +1,16 @@
-import controllers.CsvController
-import enums.Sexo
-import enums.TipoAccidente
-import formatters.*
-import models.Accidente
-import repositories.CsvRepositoryMemory
-import java.io.File
-import java.time.DayOfWeek
-import java.time.Month
+import repositories.ConsultasRepositoryMemory
 
 const val MORADO = "\u001B[35m"
 const val RESET = "\u001B[0m"
 
 fun main(args: Array<String>) {
 
-    val controller = CsvController(CsvRepositoryMemory())
+    val controller = ConsultasRepositoryMemory()
 
-    controller.escribirJson()
-    controller.escribirXml()
+//    controller.escribirJson()
+//    controller.escribirXml()
+    for (i in controller.accidentes) {
+        println(i)
+    }
 
 }
