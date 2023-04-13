@@ -2,6 +2,7 @@ package mappers
 
 import dto.AccidenteDto
 import dto.AccidenteListDto
+import formatters.*
 import models.Accidente
 import `typealias`.ListaAccidentes
 
@@ -30,3 +31,27 @@ fun Accidente.toAccidenteDto() = AccidenteDto(
 fun ListaAccidentes.toAccidenteListDto() = AccidenteListDto(
     accidentes = map { it.toAccidenteDto() }
 )
+
+fun AccidenteDto.toAccidente() = Accidente(
+    numExp = numExp,
+    fecha = fecha.toLocalDate(),
+    hora = hora.toLocalTime(),
+    localizacion = localizacion,
+    numero = numero,
+    codigoDistrito = codigoDistrito,
+    distrito = distrito,
+    tipoAccidente = tipoAccidente.toTipoAccidente(),
+    estadoMeteorologico = estadoMeteorologico,
+    tipoVehiculo = tipoVehiculo,
+    tipoPersona = tipoPersona.toTipoPersona(),
+    rangoEdad = rangoEdad,
+    sexo = sexo.toSexo(),
+    codLesividad = codLesividad,
+    lesividad = lesividad,
+    coordX = coordX,
+    coordY = coordY,
+    positivoAlcohol = positivoAlcohol,
+    positivoDroga = positivoDroga
+)
+
+fun AccidenteListDto.toAccidenteList() = accidentes.map { it.toAccidente() }

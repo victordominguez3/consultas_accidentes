@@ -20,39 +20,7 @@ import java.time.Month
 
 class ConsultasRepositoryMemory: ConsultasRepository {
 
-    var accidentes = leerCSV()
-
-    override fun leerCSV(): ListaAccidentes {
-        val path = "${System.getProperty("user.dir")}${File.separator}src${File.separator}main${File.separator}resources${File.separator}accidentes.csv"
-        val fichero = File(path)
-
-        return fichero.readLines()
-            .drop(1)
-            .map { linea -> linea.split(";") }
-            .map { columnas ->
-                Accidente(
-                    columnas[0],
-                    columnas[1].toLocalDate(),
-                    columnas[2].toLocalTime(),
-                    columnas[3].removeSurrounding("\""),
-                    columnas[4],
-                    columnas[5].toIntOrNull(),
-                    columnas[6],
-                    columnas[7].toTipoAccidente(),
-                    columnas[8],
-                    columnas[9],
-                    columnas[10].toTipoPersona(),
-                    columnas[11],
-                    columnas[12].toSexo(),
-                    columnas[13].toIntOrNull(),
-                    columnas[14],
-                    columnas[15].removeSurrounding("\"").replace(",", ".").toDoubleOrNull(),
-                    columnas[16].removeSurrounding("\"").replace(",", ".").toDoubleOrNull(),
-                    columnas[17].toMyBoolean(),
-                    columnas[18].toMyBoolean()
-                )
-            }
-    }
+    lateinit var accidentes: ListaAccidentes
 
     override fun buscarTodos(): ListaAccidentes {
         return accidentes
@@ -176,34 +144,5 @@ class ConsultasRepositoryMemory: ConsultasRepository {
     override fun accidentesAtropelloAnimal(): ListaAccidentes {
         return accidentes.filter { it.tipoAccidente == TipoAccidente.AtropelloAnimal }
 
-    }
-
-    @OptIn(ExperimentalStdlibApi::class)
-    override fun escribirJson(): File {
-        val path = "${System.getProperty("user.dir")}${File.separator}data${File.separator}accidentesJson.json"
-        val fichero = File(path)
-
-        val moshi = Moshi.Builder()
-            .add(LocalDateAdapter())
-            .add(LocalTimeAdapter())
-            .addLast(KotlinJsonAdapterFactory())
-            .build()
-
-        val jsonAdapter = moshi.adapter<ListaAccidentes>()
-
-        fichero.writeText(jsonAdapter.toPrettyJson(accidentes))
-
-        return fichero
-    }
-
-    override fun escribirXml(): File {
-        val path = "${System.getProperty("user.dir")}${File.separator}data${File.separator}accidentesXml.xml"
-        val fichero = File(path)
-
-        val serializer = Persister()
-
-        serializer.write(accidentes.toAccidenteListDto(), fichero)
-
-        return fichero
     }
 }

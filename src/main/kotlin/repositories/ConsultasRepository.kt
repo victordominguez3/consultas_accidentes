@@ -25,7 +25,4 @@ interface ConsultasRepository : CrudRepository<Accidente, String> {
     fun numAccidentesAtropelloPersona(): Int
     fun porMeteorologia(): Map<String?, ListaAccidentes>
     fun accidentesAtropelloAnimal(): ListaAccidentes
-    fun escribirJson(): File
-    fun escribirXml(): File
-
 }
