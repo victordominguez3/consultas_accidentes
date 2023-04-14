@@ -30,7 +30,7 @@ class AccidenteDto(
 
     @field:Element(name = "codDistrito")
     @param:Element(name = "codDistrito")
-    val codigoDistrito: Int? = 0,
+    val codigoDistrito: String? = "",
 
     @field:Element(name = "distrito")
     @param:Element(name = "distrito")
@@ -70,11 +70,11 @@ class AccidenteDto(
 
     @field:Element(name = "coordenadaX")
     @param:Element(name = "coordenadaX")
-    val coordX: Double? = 0.0,
+    val coordX: String? = "",
 
     @field:Element(name = "coordenadaY")
     @param:Element(name = "coordenadaY")
-    val coordY: Double? = 0.0,
+    val coordY: String? = "",
 
     @field:Element(name = "positivoAlcohol")
     @param:Element(name = "positivoAlcohol")
