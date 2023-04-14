@@ -36,10 +36,6 @@ class CsvController(private val repository: ConsultasRepository) {
             ?: throw AccidenteNoEncontradoException("No existe ningún accidente con ese número de expediente")
     }
 
-    fun leerCSV(): ListaAccidentes {
-        return repository.leerCSV()
-    }
-
     fun positivoAlcoholODrogas(): ListaAccidentes {
         return repository.positivoAlcoholODrogas()
     }
@@ -110,13 +106,5 @@ class CsvController(private val repository: ConsultasRepository) {
 
     fun accidentesAtropelloAnimal(): ListaAccidentes {
         return repository.accidentesAtropelloAnimal()
-    }
-
-    fun escribirJson(): File {
-        return repository.escribirJson()
-    }
-
-    fun escribirXml(): File {
-        return repository.escribirXml()
     }
 }
