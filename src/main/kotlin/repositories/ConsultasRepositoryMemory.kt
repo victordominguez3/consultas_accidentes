@@ -23,6 +23,10 @@ class ConsultasRepositoryMemory(private val storageService: AccidenteStorageServ
 
     private var accidentes = mutableListOf<Accidente>()
 
+    init {
+        loadAll()
+    }
+
     private fun saveAll() {
         storageService.saveAll(accidentes)
     }
@@ -48,7 +52,7 @@ class ConsultasRepositoryMemory(private val storageService: AccidenteStorageServ
                 return null
             }
         }
-        accidentes.toMutableList().add(item)
+        accidentes.add(item)
         saveAll()
         return item
     }
@@ -67,7 +71,7 @@ class ConsultasRepositoryMemory(private val storageService: AccidenteStorageServ
     override fun eliminarPorId(id: String): ListaAccidentes? {
         for (i in accidentes.indices) {
             if (accidentes[i].numExp == id) {
-                accidentes.drop(i)
+                accidentes.removeAt(i)
                 saveAll()
                 return accidentes
             }

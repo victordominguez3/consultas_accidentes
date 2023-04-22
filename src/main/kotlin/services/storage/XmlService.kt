@@ -8,7 +8,7 @@ import java.io.File
 
 object XmlService: AccidenteStorageService {
 
-    private val path = "${System.getProperty("user.dir")}${File.separator}data${File.separator}accidentesXml.xml"
+    private val path = "${System.getProperty("user.dir")}${File.separator}src${File.separator}main${File.separator}resources${File.separator}accidentesXml.xml"
     private val fichero = File(path)
     private val serializer = Persister()
 
