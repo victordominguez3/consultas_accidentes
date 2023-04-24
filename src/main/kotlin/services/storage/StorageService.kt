@@ -1,6 +1,6 @@
 package services.storage
 
 interface StorageService<T> {
-    fun saveAll(items: List<T>)
-    fun loadAll(): List<T>
+    fun exportar(items: List<T>)
+    fun importar(): List<T>
 }

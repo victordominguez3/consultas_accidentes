@@ -22,12 +22,12 @@ object JsonService: AccidenteStorageService {
         .build()
     private val jsonAdapter = moshi.adapter<ListaAccidentes>()
 
-    override fun saveAll(items: List<Accidente>) {
+    override fun exportar(items: List<Accidente>) {
         val fichero = File(path)
         fichero.writeText(jsonAdapter.toPrettyJson(items))
     }
 
-    override fun loadAll(): List<Accidente> {
+    override fun importar(): List<Accidente> {
         val fichero = File(path)
         return jsonAdapter.fromJson(fichero.readText()) ?: emptyList()
     }

@@ -1,3 +1,4 @@
+import com.squareup.moshi.Json
 import controllers.ConsultasController
 import enums.Sexo
 import enums.TipoAccidente
@@ -15,40 +16,35 @@ const val RESET = "\u001B[0m"
 
 fun main(args: Array<String>) {
 
-    val repository = ConsultasRepositoryMemory(CsvService)
-    val controlador = ConsultasController(repository)
 
-    val lista = controlador.buscarTodos()
+    val accidente = Accidente(
+        "caracol",
+        LocalDate.now(),
+        LocalTime.now(),
+        "",
+        "",
+        1,
+        "",
+        TipoAccidente.Alcance,
+        "",
+        "",
+        TipoPersona.Testigo,
+        "",
+        Sexo.Desconocido,
+        2,
+        "",
+        1.2,
+        2.2,
+        true,
+        false
+    )
 
-    val repository2 = ConsultasRepositoryMemory(XmlService)
-    val controlador2 = ConsultasController(repository2)
+    val controller = ConsultasController(ConsultasRepositoryMemory(), JsonService)
 
-    lista.forEach { controlador2.guardar(it) }
+    controller.guardar(accidente)
+    controller.exportar()
+    readln()
+    controller.eliminarPorId("caracol")
+    controller.exportar()
 
-//    controlador.guardar(
-//        Accidente(
-//            "caracol",
-//            LocalDate.now(),
-//            LocalTime.now(),
-//            "",
-//            "",
-//            1,
-//            "",
-//            TipoAccidente.Alcance,
-//            "",
-//            "",
-//            TipoPersona.Testigo,
-//            "",
-//            Sexo.Desconocido,
-//            2,
-//            "",
-//            1.2,
-//            2.2,
-//            true,
-//            false
-//        )
-//    )
-//    controlador.buscarTodos().forEach { println(it) }
-//    controlador.eliminarPorId("caracol")
-//    controlador.buscarTodos().forEach { println(it) }
 }

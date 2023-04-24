@@ -16,6 +16,7 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("org.simpleframework:simple-xml:2.7.1")
+    implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.17")
 }
 
 tasks.test {

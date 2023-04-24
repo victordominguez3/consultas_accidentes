@@ -12,11 +12,11 @@ object XmlService: AccidenteStorageService {
     private val fichero = File(path)
     private val serializer = Persister()
 
-    override fun saveAll(items: List<Accidente>) {
+    override fun exportar(items: List<Accidente>) {
         serializer.write(items.toAccidenteListDto(), fichero)
     }
 
-    override fun loadAll(): List<Accidente> {
+    override fun importar(): List<Accidente> {
         return serializer.read(dto.AccidenteListDto::class.java, fichero).toAccidenteList()
     }
 }
