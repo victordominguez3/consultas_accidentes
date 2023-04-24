@@ -5,32 +5,40 @@ import enums.TipoAccidente
 import formatters.*
 import mappers.*
 import models.Accidente
+import mu.KotlinLogging
 import `typealias`.ListaAccidentes
 import java.time.DayOfWeek
 import java.time.Month
+
+private val logger = KotlinLogging.logger {}
 
 class ConsultasRepositoryMemory(): ConsultasRepository {
 
     private var accidentes = mutableListOf<Accidente>()
 
     override fun exportar(): ListaAccidentes {
+        logger.debug { "Exportando desde repositorio" }
         return accidentes
     }
 
     override fun importar(list: ListaAccidentes) {
+        logger.debug { "Importando al repositorio" }
         accidentes.clear()
         accidentes = list.toMutableList()
     }
 
     override fun buscarTodos(): ListaAccidentes {
+        logger.debug { "Buscar todos" }
         return accidentes
     }
 
     override fun buscarPorId(id: String): Accidente? {
+        logger.debug { "Buscar por id: $id" }
         return accidentes.find { it.numExp == id }
     }
 
     override fun guardar(item: Accidente): Accidente? {
+        logger.debug { "Guardar: $item" }
         for (i in accidentes.indices) {
             if (accidentes[i].numExp == item.numExp) {
                 return null
@@ -41,6 +49,7 @@ class ConsultasRepositoryMemory(): ConsultasRepository {
     }
 
     override fun actualizar(item: Accidente): ListaAccidentes? {
+        logger.debug { "Actualizar: $item" }
         for (i in accidentes.indices) {
             if (accidentes[i].numExp == item.numExp) {
                 accidentes.toMutableList()[i] = item
@@ -51,6 +60,7 @@ class ConsultasRepositoryMemory(): ConsultasRepository {
     }
 
     override fun eliminarPorId(id: String): ListaAccidentes? {
+        logger.debug { "Eliminar por id: $id" }
         for (i in accidentes.indices) {
             if (accidentes[i].numExp == id) {
                 accidentes.removeAt(i)

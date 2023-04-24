@@ -22,8 +22,8 @@ fun Accidente.toAccidenteDto() = AccidenteDto(
     sexo = sexo.toString(),
     codLesividad = codLesividad ?: 0,
     lesividad = lesividad ?: "",
-    coordX = coordX.toString(),
-    coordY = coordY.toString(),
+    coordX = coordX,
+    coordY = coordY,
     positivoAlcohol = positivoAlcohol ?: false,
     positivoDroga = positivoDroga ?: false
 )
@@ -48,8 +48,8 @@ fun AccidenteDto.toAccidente() = Accidente(
     sexo = sexo.toSexo(),
     codLesividad = codLesividad,
     lesividad = lesividad,
-    coordX = coordX?.toDouble(),
-    coordY = coordY?.toDouble(),
+    coordX = coordX,
+    coordY = coordY,
     positivoAlcohol = positivoAlcohol,
     positivoDroga = positivoDroga
 )

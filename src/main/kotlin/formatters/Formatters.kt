@@ -26,8 +26,8 @@ fun String.toSexo(): Sexo {
 
 fun String.toMyBoolean(): Boolean? {
     return when(this) {
-        "S", "1" -> true
-        "N" -> false
+        "true" -> true
+        "false" -> false
         else -> null
     }
 }
@@ -51,16 +51,16 @@ fun String.toTipoAccidente(): TipoAccidente {
 }
 
 fun String.toLocalDate(): LocalDate {
-    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    val formatter = DateTimeFormatter.ISO_LOCAL_DATE
     return LocalDate.parse(this, formatter)
 }
 
 fun String.toLocalTime(): LocalTime {
-    val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-    var hora = "0"
-    if (this.length == 7) {
-        hora += this
-        return LocalTime.parse(hora, formatter)
-    }
+    val formatter = DateTimeFormatter.ofPattern("HH:mm")
+//    var hora = "0"
+//    if (this.length == 7) {
+//        hora += this
+//        return LocalTime.parse(hora, formatter)
+//    }
     return LocalTime.parse(this, formatter)
 }

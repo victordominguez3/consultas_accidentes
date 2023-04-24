@@ -8,10 +8,13 @@ import exceptions.AccidenteException
 import exceptions.AccidenteNoEncontradoException
 import exceptions.AccidenteNoValidoException
 import models.Accidente
+import mu.KotlinLogging
 import repositories.ConsultasRepository
 import services.storage.AccidenteStorageService
 import `typealias`.ListaAccidentes
 import java.time.Month
+
+private val logger = KotlinLogging.logger {}
 
 class ConsultasController(
     private val repository: ConsultasRepository,
@@ -19,37 +22,44 @@ class ConsultasController(
 ) {
 
     init {
-        importar()
+//        importar()
     }
 
     fun importar() {
+        logger.debug { "Controller -> Importar al repositorio desde storage" }
         repository.importar(storage.importar())
     }
 
     fun exportar() {
+        logger.debug { "Controller -> Exportar a storage desde el repositorio" }
         storage.exportar(repository.exportar())
     }
 
     fun buscarTodos(): ListaAccidentes {
+        logger.debug { "Controller -> Buscar todos" }
         return repository.buscarTodos()
     }
 
     fun buscarPorId(id: String): Result<Accidente, AccidenteException> {
+        logger.debug { "Controller -> Buscar por id: $id" }
         return repository.buscarPorId(id)?.let { Ok(it) }
             ?: Err(AccidenteNoEncontradoException("No se ha encontrado ningún accidente con el id proporcionado"))
     }
 
     fun guardar(item: Accidente): Result<Accidente, AccidenteException> {
+        logger.debug { "Controller -> Guardar: $item" }
         return repository.guardar(item)?.let { Ok(it) }
             ?: Err(AccidenteNoValidoException("Ya existe un accidente con el mismo número de expediente"))
     }
 
     fun actualizar(item: Accidente): Result<ListaAccidentes, AccidenteException> {
+        logger.debug { "Controller -> Actualizar: $item" }
         return repository.actualizar(item)?.let { Ok(it) }
             ?: Err(AccidenteNoEncontradoException("No se pudo actualizar el accidente porque no existe en la lista"))
     }
 
     fun eliminarPorId(id: String): Result<ListaAccidentes, AccidenteException> {
+        logger.debug { "Controller -> Eliminar por id: $id" }
         return repository.eliminarPorId(id)?.let { Ok(it) }
             ?: Err(AccidenteNoEncontradoException("No existe ningún accidente con ese número de expediente"))
     }

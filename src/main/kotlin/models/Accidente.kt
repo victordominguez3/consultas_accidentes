@@ -24,8 +24,8 @@ class Accidente(
     val sexo: Sexo,
     val codLesividad: Int?,
     val lesividad: String?,
-    val coordX: Double?,
-    val coordY: Double?,
+    val coordX: String?,
+    val coordY: String?,
     val positivoAlcohol: Boolean?,
     val positivoDroga: Boolean?
 ) {
@@ -46,7 +46,7 @@ class Accidente(
                 "${MORADO}Código Lesivilidad$RESET: $codLesividad,\t" +
                 "${MORADO}Lesivilidad$RESET: $lesividad,\t" +
                 "${MORADO}Coordeanda X$RESET: $coordX,\t" +
-                "${MORADO}Coorenada Y$RESET: $coordY,\t" +
+                "${MORADO}Coordenada Y$RESET: $coordY,\t" +
                 "${MORADO}Positivo Alochol$RESET: $positivoAlcohol,\t" +
                 "${MORADO}Positivo Droga$RESET: $positivoDroga"
     }

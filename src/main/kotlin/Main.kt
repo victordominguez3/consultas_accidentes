@@ -16,7 +16,6 @@ const val RESET = "\u001B[0m"
 
 fun main(args: Array<String>) {
 
-
     val accidente = Accidente(
         "caracol",
         LocalDate.now(),
@@ -33,18 +32,21 @@ fun main(args: Array<String>) {
         Sexo.Desconocido,
         2,
         "",
-        1.2,
-        2.2,
+        1.2.toString(),
+        2.2.toString(),
         true,
         false
     )
 
-    val controller = ConsultasController(ConsultasRepositoryMemory(), JsonService)
+    val csvController = ConsultasController(ConsultasRepositoryMemory(), CsvService)
+    val jsonController = ConsultasController(ConsultasRepositoryMemory(), JsonService)
 
-    controller.guardar(accidente)
-    controller.exportar()
-    readln()
-    controller.eliminarPorId("caracol")
-    controller.exportar()
+    csvController.importar()
+    val lista = csvController.buscarTodos()
+    for (i in lista) {
+        jsonController.guardar(i)
+    }
+    jsonController.buscarTodos().forEach { println(it) }
+    jsonController.exportar()
 
 }
