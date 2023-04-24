@@ -1,5 +1,6 @@
 package models
 
+import AZUL
 import MORADO
 import RESET
 import enums.Sexo
@@ -30,24 +31,24 @@ class Accidente(
     val positivoDroga: Boolean?
 ) {
     override fun toString(): String {
-        return "${MORADO}Num. Exp$RESET: $numExp,\t" +
-                "${MORADO}Fecha$RESET: $fecha,\t" +
-                "${MORADO}Hora$RESET: $hora,\t" +
-                "${MORADO}Localizacion$RESET: $localizacion,\t" +
-                "${MORADO}Número$RESET: $numero,\t" +
-                "${MORADO}Código Distrito$RESET: $codigoDistrito,\t" +
-                "${MORADO}Distrito$RESET: $distrito,\t" +
-                "${MORADO}Tipo models.Accidente$RESET: $tipoAccidente,\t" +
-                "${MORADO}Estado Meteorológico$RESET: $estadoMeteorologico,\t" +
-                "${MORADO}Tipo Vehiculo$RESET: $tipoVehiculo,\t" +
-                "${MORADO}Tipo Persona$RESET: $tipoPersona,\t" +
-                "${MORADO}Rango Edad$RESET: $rangoEdad,\t" +
-                "${MORADO}enums.Sexo$RESET: $sexo,\t" +
-                "${MORADO}Código Lesivilidad$RESET: $codLesividad,\t" +
-                "${MORADO}Lesivilidad$RESET: $lesividad,\t" +
-                "${MORADO}Coordeanda X$RESET: $coordX,\t" +
-                "${MORADO}Coordenada Y$RESET: $coordY,\t" +
-                "${MORADO}Positivo Alochol$RESET: $positivoAlcohol,\t" +
-                "${MORADO}Positivo Droga$RESET: $positivoDroga"
+        return "${AZUL}Num. Exp$RESET: $numExp,\t" +
+                "${AZUL}Fecha$RESET: $fecha,\t" +
+                "${AZUL}Hora$RESET: $hora,\t" +
+                "${AZUL}Localizacion$RESET: $localizacion,\t" +
+                "${AZUL}Número$RESET: $numero,\t" +
+                "${AZUL}Código Distrito$RESET: $codigoDistrito,\t" +
+                "${AZUL}Distrito$RESET: $distrito,\t" +
+                "${AZUL}Tipo models.Accidente$RESET: $tipoAccidente,\t" +
+                "${AZUL}Estado Meteorológico$RESET: $estadoMeteorologico,\t" +
+                "${AZUL}Tipo Vehiculo$RESET: $tipoVehiculo,\t" +
+                "${AZUL}Tipo Persona$RESET: $tipoPersona,\t" +
+                "${AZUL}Rango Edad$RESET: $rangoEdad,\t" +
+                "${AZUL}enums.Sexo$RESET: $sexo,\t" +
+                "${AZUL}Código Lesivilidad$RESET: $codLesividad,\t" +
+                "${AZUL}Lesivilidad$RESET: $lesividad,\t" +
+                "${AZUL}Coordeanda X$RESET: $coordX,\t" +
+                "${AZUL}Coordenada Y$RESET: $coordY,\t" +
+                "${AZUL}Positivo Alochol$RESET: $positivoAlcohol,\t" +
+                "${AZUL}Positivo Droga$RESET: $positivoDroga"
     }
 }

@@ -1,5 +1,7 @@
 package services.storage
 
+import MORADO
+import RESET
 import mappers.toAccidenteList
 import mappers.toAccidenteListDto
 import models.Accidente
@@ -15,12 +17,12 @@ object XmlService: AccidenteStorageService {
     private val serializer = Persister()
 
     override fun exportar(items: List<Accidente>) {
-        logger.debug { "Exportando a XML" }
+        logger.debug { "${MORADO}XmlService$RESET -> Exportando a XML" }
         serializer.write(items.toAccidenteListDto(), fichero)
     }
 
     override fun importar(): List<Accidente> {
-        logger.debug { "Importando desde XML" }
+        logger.debug { "${MORADO}XmlService$RESET -> Importando desde XML" }
         return serializer.read(dto.AccidenteListDto::class.java, fichero).toAccidenteList()
     }
 }

@@ -24,9 +24,9 @@ class AccidenteDto(
     @param:Element(name = "localizacion")
     val localizacion: String = "",
 
-    @field:Element(name = "numero")
-    @param:Element(name = "numero")
-    val numero: String = "",
+    @field:Element(name = "numero", required = false)
+    @param:Element(name = "numero", required = false)
+    val numero: String? = "",
 
     @field:Element(name = "codDistrito")
     @param:Element(name = "codDistrito")

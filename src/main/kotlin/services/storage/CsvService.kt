@@ -1,5 +1,7 @@
 package services.storage
 
+import MORADO
+import RESET
 import formatters.*
 import models.Accidente
 import mu.KotlinLogging
@@ -11,7 +13,7 @@ object CsvService: AccidenteStorageService {
     private val path = "${System.getProperty("user.dir")}${File.separator}src${File.separator}main${File.separator}resources${File.separator}accidentes.csv"
     val fichero = File(path)
     override fun exportar(items: List<Accidente>) {
-        logger.debug { "Exportando a CSV" }
+        logger.debug { "${MORADO}CsvService$RESET -> Exportando a CSV" }
         fichero.writeText("num_expediente;fecha;hora;localizacion;numero;cod_distrito;" +
                 "distrito;tipo_accidente;estado_meteorológico;tipo_vehiculo;tipo_persona;" +
                 "rango_edad;sexo;cod_lesividad;lesividad;coordenada_x_utm;coordenada_y_utm;positiva_alcohol;positiva_droga\n")
@@ -23,7 +25,7 @@ object CsvService: AccidenteStorageService {
     }
 
     override fun importar(): List<Accidente> {
-        logger.debug { "Importando desde CSV" }
+        logger.debug { "${MORADO}CsvService$RESET -> Importando desde CSV" }
         return fichero.readLines()
             .drop(1)
             .map { linea -> linea.split(";") }

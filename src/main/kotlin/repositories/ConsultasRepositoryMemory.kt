@@ -1,5 +1,7 @@
 package repositories
 
+import MORADO
+import RESET
 import enums.Sexo
 import enums.TipoAccidente
 import formatters.*
@@ -17,28 +19,28 @@ class ConsultasRepositoryMemory(): ConsultasRepository {
     private var accidentes = mutableListOf<Accidente>()
 
     override fun exportar(): ListaAccidentes {
-        logger.debug { "Exportando desde repositorio" }
+        logger.debug { "${MORADO}Repository$RESET -> Exportando desde repositorio" }
         return accidentes
     }
 
     override fun importar(list: ListaAccidentes) {
-        logger.debug { "Importando al repositorio" }
+        logger.debug { "${MORADO}Repository$RESET -> Importando al repositorio" }
         accidentes.clear()
         accidentes = list.toMutableList()
     }
 
     override fun buscarTodos(): ListaAccidentes {
-        logger.debug { "Buscar todos" }
+        logger.debug { "${MORADO}Repository$RESET -> Buscar todos" }
         return accidentes
     }
 
     override fun buscarPorId(id: String): Accidente? {
-        logger.debug { "Buscar por id: $id" }
+        logger.debug { "${MORADO}Repository$RESET -> Buscar por id: $id" }
         return accidentes.find { it.numExp == id }
     }
 
     override fun guardar(item: Accidente): Accidente? {
-        logger.debug { "Guardar: $item" }
+        logger.debug { "${MORADO}Repository$RESET -> Guardar: $item" }
         for (i in accidentes.indices) {
             if (accidentes[i].numExp == item.numExp) {
                 return null
@@ -49,7 +51,7 @@ class ConsultasRepositoryMemory(): ConsultasRepository {
     }
 
     override fun actualizar(item: Accidente): ListaAccidentes? {
-        logger.debug { "Actualizar: $item" }
+        logger.debug { "${MORADO}Repository$RESET -> Actualizar: $item" }
         for (i in accidentes.indices) {
             if (accidentes[i].numExp == item.numExp) {
                 accidentes.toMutableList()[i] = item
@@ -60,7 +62,7 @@ class ConsultasRepositoryMemory(): ConsultasRepository {
     }
 
     override fun eliminarPorId(id: String): ListaAccidentes? {
-        logger.debug { "Eliminar por id: $id" }
+        logger.debug { "${MORADO}Repository$RESET -> Eliminar por id: $id" }
         for (i in accidentes.indices) {
             if (accidentes[i].numExp == id) {
                 accidentes.removeAt(i)

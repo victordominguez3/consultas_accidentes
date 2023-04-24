@@ -1,5 +1,7 @@
 package controllers
 
+import MORADO
+import RESET
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
@@ -12,6 +14,7 @@ import mu.KotlinLogging
 import repositories.ConsultasRepository
 import services.storage.AccidenteStorageService
 import `typealias`.ListaAccidentes
+import validators.validar
 import java.time.Month
 
 private val logger = KotlinLogging.logger {}
@@ -22,44 +25,45 @@ class ConsultasController(
 ) {
 
     init {
-//        importar()
+        importar()
     }
 
     fun importar() {
-        logger.debug { "Controller -> Importar al repositorio desde storage" }
+        logger.debug { "${MORADO}Controller$RESET -> Importar al repositorio desde storage" }
         repository.importar(storage.importar())
     }
 
     fun exportar() {
-        logger.debug { "Controller -> Exportar a storage desde el repositorio" }
+        logger.debug { "${MORADO}Controller$RESET -> Exportar a storage desde el repositorio" }
         storage.exportar(repository.exportar())
     }
 
     fun buscarTodos(): ListaAccidentes {
-        logger.debug { "Controller -> Buscar todos" }
+        logger.debug { "${MORADO}Controller$RESET -> Buscar todos" }
         return repository.buscarTodos()
     }
 
     fun buscarPorId(id: String): Result<Accidente, AccidenteException> {
-        logger.debug { "Controller -> Buscar por id: $id" }
+        logger.debug { "${MORADO}Controller$RESET -> Buscar por id: $id" }
         return repository.buscarPorId(id)?.let { Ok(it) }
             ?: Err(AccidenteNoEncontradoException("No se ha encontrado ningún accidente con el id proporcionado"))
     }
 
     fun guardar(item: Accidente): Result<Accidente, AccidenteException> {
-        logger.debug { "Controller -> Guardar: $item" }
-        return repository.guardar(item)?.let { Ok(it) }
+        logger.debug { "${MORADO}Controller$RESET -> Guardar: $item" }
+
+        return repository.guardar(item).also { item.validar() }?.let { Ok(it) }
             ?: Err(AccidenteNoValidoException("Ya existe un accidente con el mismo número de expediente"))
     }
 
     fun actualizar(item: Accidente): Result<ListaAccidentes, AccidenteException> {
-        logger.debug { "Controller -> Actualizar: $item" }
-        return repository.actualizar(item)?.let { Ok(it) }
+        logger.debug { "${MORADO}Controller$RESET -> Actualizar: $item" }
+        return repository.actualizar(item).also { item.validar() }?.let { Ok(it) }
             ?: Err(AccidenteNoEncontradoException("No se pudo actualizar el accidente porque no existe en la lista"))
     }
 
     fun eliminarPorId(id: String): Result<ListaAccidentes, AccidenteException> {
-        logger.debug { "Controller -> Eliminar por id: $id" }
+        logger.debug { "${MORADO}Controller$RESET -> Eliminar por id: $id" }
         return repository.eliminarPorId(id)?.let { Ok(it) }
             ?: Err(AccidenteNoEncontradoException("No existe ningún accidente con ese número de expediente"))
     }

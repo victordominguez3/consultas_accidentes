@@ -1,5 +1,7 @@
 package services.storage
 
+import MORADO
+import RESET
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -27,13 +29,13 @@ object JsonService: AccidenteStorageService {
     private val jsonAdapter = moshi.adapter<ListaAccidentes>()
 
     override fun exportar(items: ListaAccidentes) {
-        logger.debug { "Exportando a JSON" }
+        logger.debug { "${MORADO}JsonService$RESET -> Exportando a JSON" }
         val fichero = File(path)
         fichero.writeText(jsonAdapter.toPrettyJson(items))
     }
 
     override fun importar(): ListaAccidentes {
-        logger.debug { "Importando desde JSON" }
+        logger.debug { "${MORADO}JsonService$RESET -> Importando desde JSON" }
         val fichero = File(path)
         return jsonAdapter.fromJson(fichero.readText()) ?: emptyList()
     }
