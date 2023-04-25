@@ -25,6 +25,7 @@ class ConsultasController(
 ) {
 
     init {
+        logger.debug { "${MORADO}Controller$RESET -> Importación de datos inicial" }
         importar()
     }
 

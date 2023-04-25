@@ -10,10 +10,10 @@ import java.io.File
 private val logger = KotlinLogging.logger {}
 
 object CsvService: AccidenteStorageService {
-    private val path = "${System.getProperty("user.dir")}${File.separator}src${File.separator}main${File.separator}resources${File.separator}accidentes.csv"
-    val fichero = File(path)
     override fun exportar(items: List<Accidente>) {
         logger.debug { "${MORADO}CsvService$RESET -> Exportando a CSV" }
+        val path = "${System.getProperty("user.dir")}${File.separator}data${File.separator}accidentes.csv"
+        val fichero = File(path)
         fichero.writeText("num_expediente;fecha;hora;localizacion;numero;cod_distrito;" +
                 "distrito;tipo_accidente;estado_meteorológico;tipo_vehiculo;tipo_persona;" +
                 "rango_edad;sexo;cod_lesividad;lesividad;coordenada_x_utm;coordenada_y_utm;positiva_alcohol;positiva_droga\n")
@@ -26,6 +26,8 @@ object CsvService: AccidenteStorageService {
 
     override fun importar(): List<Accidente> {
         logger.debug { "${MORADO}CsvService$RESET -> Importando desde CSV" }
+        val path = "${System.getProperty("user.dir")}${File.separator}src${File.separator}main${File.separator}resources${File.separator}accidentes.csv"
+        val fichero = File(path)
         return fichero.readLines()
             .drop(1)
             .map { linea -> linea.split(";") }

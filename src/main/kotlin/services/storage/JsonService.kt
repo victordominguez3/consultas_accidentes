@@ -19,7 +19,7 @@ private val logger = KotlinLogging.logger {}
 @OptIn(ExperimentalStdlibApi::class)
 object JsonService: AccidenteStorageService {
 
-    private val path = "${System.getProperty("user.dir")}${File.separator}src${File.separator}main${File.separator}resources${File.separator}accidentesJson.json"
+    private val path = "${System.getProperty("user.dir")}${File.separator}data${File.separator}accidentesJson.json"
 
     private val moshi = Moshi.Builder()
         .add(LocalDateAdapter())
